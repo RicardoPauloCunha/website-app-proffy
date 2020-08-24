@@ -14,7 +14,7 @@ import api from '../../services/api';
 
 import "./styles.css";
 
-interface UserProps {
+export interface UserProps {
     name: string;
     avatar: string;
 }
@@ -34,12 +34,12 @@ function Landing() {
         <div id="page-landing">
             <div id="page-landing-content" className="container">
                 <header>
-                    <div className="user-log">
+                    <Link to="/perfil" className="user-log">
                         <img src={user.avatar} alt="img" />
                         <div>
                             <span>{user.name}</span>
                         </div>
-                    </div>
+                    </Link>
 
                     <Link className="icon-logout" to="/"><FiLogOut /></Link>
                 </header>

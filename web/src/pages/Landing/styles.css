@@ -22,21 +22,30 @@
     margin: 2rem 0;
 }
 
-#page-landing header a {
-    color: var(--color-text-in-primary);
-    transition: 1s;
-    font-size: 2.4rem;
-}
-
-#page-landing header a:hover {
-    opacity: 0.6;
-}
-
 .user-log
 {
     display: flex;
     flex-direction: row;
     align-items: center;
+    transition: 1s;
+    cursor: pointer;
+    font-size: 1.6rem;
+    text-decoration: none;
+    color: var(--color-text-in-primary);
+}
+
+.icon-logout {
+    color: var(--color-text-in-primary);
+    transition: 1s;
+    font-size: 2.4rem;
+}
+
+.icon-logout:hover {
+    opacity: 0.6;
+}
+
+.user-log:hover {
+    opacity: 0.6;
 }
 
 .user-log img {

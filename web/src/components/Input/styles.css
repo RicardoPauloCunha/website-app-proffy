@@ -11,7 +11,7 @@
 }
 
 .input-block input {
-    width: 100%;
+    width: 90%;
     height: 5.6rem;
     border-radius: 0.8rem;
     background: var(--color-input-background);

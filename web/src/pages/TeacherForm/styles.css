@@ -9,7 +9,6 @@
 
 #page-teacher-form main {
     background: var(--color-box-base);
-    width: 100%;
     max-width: 74rem;
     border-radius: 0.8rem;
     margin: -3.2rem auto;
@@ -40,6 +39,33 @@
     width: 100%;
     padding-bottom: 1.6rem;
     border-bottom: 1px solid var(--color-line-in-white);
+}
+
+#page-teacher-form main fieldset header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+#page-teacher-form main fieldset header img {
+    width: 8rem;
+    height: 8rem;
+    border-radius: 50%;
+    background-color: lightgray;
+}
+
+#page-teacher-form main fieldset header div {
+    margin-left: 2rem;
+}
+
+#page-teacher-form main fieldset header div strong {
+    font: 700 2rem Archivo;
+    display: block;
+    color: var(--color-text-title);   
+}
+
+.user-infos {
+    margin-bottom: 2rem;
 }
 
 #page-teacher-form main fieldset legend button {
@@ -139,4 +165,20 @@
         width: 20rem;
         margin-top: 0;
     }
+
+    .user-infos, .group-inputs {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .group-inputs span {
+        margin-left: 3.2rem;
+    }
+
+    #page-teacher-form main fieldset .input-block + .textarea-block,
+    #page-teacher-form main fieldset .select-block + .input-block {
+        margin-top: 0rem;
+    }   
 }

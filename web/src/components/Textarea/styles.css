@@ -11,7 +11,7 @@
 }
 
 .textarea-block textarea {
-    width: 100%;
+    width: 90%;
     height: 16rem;
     border-radius: 0.8rem;
     min-height: 8rem;
@@ -32,4 +32,10 @@
     left: 1.6rem;
     right: 1.6rem;
     bottom: 7px;
+}
+
+@media (min-width: 1100px) {
+    .textarea-block textarea {
+        width: 95%;
+    }
 }
