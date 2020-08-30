@@ -64,7 +64,7 @@
 
     .page-header .header-content {
         flex: 1;
-        max-width: 740px;
+        max-width: 60%;
         margin: 0 auto;
         padding-bottom: 3.2rem;
         display: flex;

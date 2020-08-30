@@ -18,7 +18,7 @@
     width: 24rem;
 }
 
-@media (min-width: 1100px) {
+@media (min-width: 700px) {
     #banner-content {
         width: 55%;
     }

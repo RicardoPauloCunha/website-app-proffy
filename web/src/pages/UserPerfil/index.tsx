@@ -1,7 +1,6 @@
-import React, { useState, FormEvent } from 'react';
+import React, { useState, FormEvent, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 
-import { UserProps } from '../Landing';
 import PageHeader from '../../components/PageHeader';
 import Input from '../../components/Input';
 import Textarea from '../../components/Textarea';
@@ -11,20 +10,17 @@ import warningIcon from '../../assents/images/icons/warning.svg'
 
 import './styles.css'
 import api from '../../services/api';
-
-interface UserPerfilProps {
-    name: string;
-    avatar: string;
-    subject: string;
-}
+import { TokenDecodedProps } from '../Landing';
+import { decodeToken } from '../../services/auth';
+import { setFromPageConcluded } from '../../services/fromConcluded';
 
 function UserPerfil() {
     const history = useHistory();
-    const [user, setUser] = useState<UserPerfilProps>({ avatar: '', name: 'My name', subject: 'Matemática' });
 
     const [name, setName] = useState('');
     const [surname, setSurname] = useState('');
     const [email, setEmail] = useState('');
+    const [avatar, setAvatar] = useState('');
     const [whatsapp, setWhatsapp] = useState('');
     const [bio, setBio] = useState('');
 
@@ -32,15 +28,25 @@ function UserPerfil() {
     const [cost, setCost] = useState('');
 
     const [scheduleItems, setScheduleItems] = useState([
-        { week_day: "0", from: "", to: "" }
+        { id: 0, week_day: "1", from: "", to: "" }
     ]);
 
-    function addNewScheduleItem() {
-        setScheduleItems([
-            ...scheduleItems,
-            { week_day: "0", from: "", to: "" }
-        ]);
-    }
+    useEffect(() => {
+        let tokenDecoded = decodeToken() as TokenDecodedProps;
+
+        api.get(`classes/user-id/${tokenDecoded.user_id}`)
+            .then((response: any) => {
+                setName(response.data.name);
+                setSurname(response.data.surname);
+                setAvatar(response.data.avatar);
+                setEmail(response.data.email);
+                setWhatsapp(response.data.whatsapp);
+                setBio(response.data.bio);
+                setSubject(response.data.subject);
+                setCost(response.data.cost);
+                setScheduleItems(response.data.class_schedule);
+            });
+    }, []);
 
     function setScheduleItemValue(position: number, field: string, value: string) {
         const updatedScheduleItem = scheduleItems.map((scheduleItem, index) => {
@@ -54,21 +60,58 @@ function UserPerfil() {
         setScheduleItems(updatedScheduleItem);
     }
 
+    function addNewScheduleItem() {
+        setScheduleItems([
+            ...scheduleItems,
+            { id: 0, week_day: "1", from: "", to: "" }
+        ]);
+    }
+
+    function removeScheduleItem(index: number) {
+        scheduleItems.splice(index, 1);
+
+        setScheduleItems([...scheduleItems]);
+    }
+
+    function editClassPerfil(e: FormEvent) {
+        e.preventDefault();
+
+        let tokenDecoded = decodeToken() as TokenDecodedProps;
+
+        api.put(`/classes/user-id/${tokenDecoded.user_id}`, {
+            name,
+            surname,
+            email,
+            avatar,
+            whatsapp,
+            bio,
+            subject,
+            cost: Number(cost),
+            schedule: scheduleItems
+        }).then(() => {
+            setFromPageConcluded(3);
+
+            history.push('/concluded');
+        }).catch(err => {
+            alert("Ocorreu um erro");
+        });
+    }
+
     return (
         <div id="page-teacher-form" className="container">
             <PageHeader
                 page="Meu Perfil"
             >
                 <div className="user-infos-header">
-                    <img src={user.avatar} alt="avatar" />
-                    <strong>{user.name}</strong>
-                    <span>{user.subject}</span>
+                    <img src={avatar} alt="avatar" />
+                    <strong>{`${name} ${surname}`}</strong>
+                    <span>{subject}</span>
                 </div>
 
             </PageHeader>
 
             <main>
-                <form>
+                <form onSubmit={editClassPerfil}>
                     <fieldset>
                         <legend>Seus Dados</legend>
                         <div className="user-infos">
@@ -122,8 +165,13 @@ function UserPerfil() {
                                 options={[
                                     { value: "Artes", label: "Artes" },
                                     { value: "Biologia", label: "Biologia" },
-                                    { value: "Física", label: "Física" },
-                                    { value: "Química", label: "Química" }
+                                    { value: "Ciência", label: "Ciência" },
+                                    { value: "E. Física", label: "E. Física" },
+                                    { value: "Inglês", label: "Inglês" },
+                                    { value: "Matemática", label: "Matemática" },
+                                    { value: "Português", label: "Português" },
+                                    { value: "Geográfia", label: "Geográfia" },
+                                    { value: "História", label: "História" }
                                 ]}
                             />
 
@@ -146,37 +194,43 @@ function UserPerfil() {
                         {
                             scheduleItems.map((scheduleItem, index) => {
                                 return (
-                                    <div key={scheduleItem.week_day} className="schedule-item">
-                                        <Select
-                                            name="week_day"
-                                            label="Dia da semana"
-                                            value={scheduleItem.week_day}
-                                            onChange={e => setScheduleItemValue(index, 'week_day', e.target.value)}
-                                            options={[
-                                                { value: "0", label: "Domingo" },
-                                                { value: "1", label: "Segunda-feira" },
-                                                { value: "2", label: "Terça-feira" },
-                                                { value: "3", label: "Quarta-feira" },
-                                                { value: "4", label: "Quinta-feira" },
-                                                { value: "5", label: "Sexta-feira" },
-                                                { value: "6", label: "Sábado" }
-                                            ]}
-                                        />
-                                        <Input
-                                            name="from"
-                                            label="Das"
-                                            type="time"
-                                            value={scheduleItem.from}
-                                            onChange={e => setScheduleItemValue(index, 'from', e.target.value)}
-                                        />
+                                    <div key={index} className="schedule-item">
+                                        <div className="form-scheduleItem">
+                                            <Select
+                                                name="week_day"
+                                                label="Dia da semana"
+                                                value={scheduleItem.week_day}
+                                                onChange={e => setScheduleItemValue(index, 'week_day', e.target.value)}
+                                                options={[
+                                                    { value: "1", label: "Segunda-feira" },
+                                                    { value: "2", label: "Terça-feira" },
+                                                    { value: "3", label: "Quarta-feira" },
+                                                    { value: "4", label: "Quinta-feira" },
+                                                    { value: "5", label: "Sexta-feira" },
+                                                ]}
+                                            />
+                                            <Input
+                                                name="from"
+                                                label="Das"
+                                                type="time"
+                                                value={scheduleItem.from}
+                                                onChange={e => setScheduleItemValue(index, 'from', e.target.value)}
+                                            />
 
-                                        <Input
-                                            name="to"
-                                            label="Até"
-                                            type="time"
-                                            value={scheduleItem.to}
-                                            onChange={e => setScheduleItemValue(index, 'to', e.target.value)}
-                                        />
+                                            <Input
+                                                name="to"
+                                                label="Até"
+                                                type="time"
+                                                value={scheduleItem.to}
+                                                onChange={e => setScheduleItemValue(index, 'to', e.target.value)}
+                                            />
+                                        </div>
+
+                                        <div className="delete-time">
+                                            <div></div>
+                                            <span onClick={() => removeScheduleItem(index)}>Excluir horário</span>
+                                            <div></div>
+                                        </div>
                                     </div>
                                 )
                             })

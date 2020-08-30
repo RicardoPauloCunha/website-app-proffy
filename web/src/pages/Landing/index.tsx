@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FiLogOut } from 'react-icons/fi';
 
-
 import logoImg from '../../assents/images/logo.svg'
 import landingImg from '../../assents/images/landing.svg'
 
@@ -13,35 +12,47 @@ import purpleHeartIcon from '../../assents/images/icons/purple-heart.svg'
 import api from '../../services/api';
 
 import "./styles.css";
+import { decodeToken, onSignOut } from '../../services/auth';
 
-export interface UserProps {
-    name: string;
-    avatar: string;
+export interface TokenDecodedProps {
+    user_id: number;
+    user_name: string;
 }
 
 function Landing() {
     const [totalConnections, setTotalConnections] = useState(0);
-    const [user, setUser] = useState<UserProps>({ avatar: '', name: 'My name' });
+    const [userName, setUserName] = useState('');
 
     useEffect(() => {
-        api.get('connections').then(response => {
-            const { total } = response.data;
-            setTotalConnections(total);
-        })
+        let tokenDecoded = decodeToken() as TokenDecodedProps;
+
+        if (tokenDecoded === null)
+            setUserName('ERROR')
+        else {
+            setUserName(tokenDecoded.user_name);
+
+            api.get('connections').then(response => {
+                const { total } = response.data;
+                setTotalConnections(total);
+            });
+        }
     }, []);
+
+    function logout() {
+        onSignOut();
+    };
 
     return (
         <div id="page-landing">
             <div id="page-landing-content" className="container">
                 <header>
                     <Link to="/perfil" className="user-log">
-                        <img src={user.avatar} alt="img" />
                         <div>
-                            <span>{user.name}</span>
+                            <span>{userName}</span>
                         </div>
                     </Link>
 
-                    <Link className="icon-logout" to="/"><FiLogOut /></Link>
+                    <Link className="icon-logout" to="/" onClick={() => logout()}><FiLogOut /></Link>
                 </header>
 
                 <div className="logo-container">

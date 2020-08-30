@@ -7,7 +7,7 @@
 }
 
 .teacher-item header {
-    padding: 3.2rem 2rem;
+    padding: 3.2rem 2rem 1.5rem 2rem;
     display: flex;
     align-items: center;
 }
@@ -16,6 +16,7 @@
     width: 8rem;
     height: 8rem;
     border-radius: 50%;
+    background-color: lightgray;
 }
 
 .teacher-item header div {
@@ -40,6 +41,41 @@
     line-height: 2.8rem;
 }
 
+.class-weeks {
+    padding: 1rem 2rem;
+    margin: 0.5rem auto;
+}
+
+.class-weeks .schedule-item {
+    width: 80%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 1rem 3rem;
+    border-radius: 1.6rem;
+    border: 1px solid var(--color-line-in-white);
+    margin: 2rem 0;
+    background-color: var(--color-back-line-in-white);
+}
+
+.class-weeks .schedule-item-opacity {
+    opacity: 0.5;
+}
+
+.class-weeks .schedule-item div {
+    display: flex;
+    flex-direction: column;
+}
+
+.class-weeks div span {
+    color: var(--color-text-complement);
+}
+
+.class-weeks div strong {
+    color: var(--color-text-base);
+    font: 700 2rem Archivo;
+}
+
 .teacher-item footer {
     padding: 3.2rem 2rem;
     background: var(--color-box-footer);
@@ -53,7 +89,7 @@
 .teacher-item footer p strong {
     color: (--color-primary);
     font-size: 1.6rem;
-    display: black;
+    margin-left: 0.6rem;
 }
 
 .teacher-item footer a {
@@ -80,11 +116,29 @@
 {
     .teacher-item header,
     .teacher-item footer {
-        padding: 3.2rem;
+        padding: 3.2rem 3.2rem 1.5rem 3.2rem;
     }
 
     .teacher-item p {
         padding: 0 3.2rem;
+    }
+
+    .class-weeks {
+        padding: 0;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        width: 90%;
+    }
+
+    .class-weeks .schedule-item {
+        flex-direction: column;
+        padding: 1rem 1.6rem;
+        width: 12%;
+    }
+
+    .schedule-item-week-day {
+        margin-bottom: 2rem;
     }
 
     .teacher-item footer p strong {

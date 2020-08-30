@@ -140,7 +140,7 @@
         padding: 0 6.4rem;
     }
 
-    #page-teacher-form main .schedule-item {
+    #page-teacher-form main .schedule-item .form-scheduleItem{
         display: grid;
         grid-template-columns: 2fr repeat(2, 1fr);
         grid-column-gap: 1.6rem;

@@ -1,24 +1,54 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom'
+import React, { useState, FormEvent, useEffect } from 'react';
+import { Link, useHistory } from 'react-router-dom'
 
 import './styles.css';
 
 import Banner from '../../components/Banner';
 import InputTogether from '../../components/InputTogether';
 import purpleHeartIcon from '../../assents/images/icons/purple-heart.svg'
+import api from '../../services/api';
+import { onSignIn, rememberMe, logged } from '../../services/auth';
 
 function Login() {
+    const history = useHistory();
+
     let [email, setEmail] = useState('');
     let [password, setPassword] = useState('');
-    let [remember, setRemember] = useState('');
+    let [remember, setRemember] = useState(false);
     let [buttonDisabled, setButtonDisabled] = useState(true);
+    let [messegeErro, setMessegeErro] = useState('');
+
+    useEffect(() => {
+        let remember = rememberMe();
+        let log = logged();
+
+        if (remember && log)
+            history.push('/landing');
+    }, []);
+
+    async function login(e: FormEvent) {
+        e.preventDefault();
+
+        await api.post('login', {
+            email,
+            password
+        })
+            .then(response => {
+                onSignIn(response.data, remember);
+
+                history.push('/landing');
+            })
+            .catch(() => {
+                setMessegeErro('Email ou senha inválida.');
+            });
+    }
 
     return (
-        <div id="page-login">
+        <div id="page-login" className="container">
             <Banner />
 
             <main>
-                <form>
+                <form onSubmit={login}>
                     <fieldset>
                         <legend>Fazer login</legend>
                         <InputTogether
@@ -27,7 +57,15 @@ function Login() {
                             value={email}
                             firstElement={true}
                             type="email"
-                            onChange={(e) => setEmail(e.target.value)}
+                            required
+                            onChange={(e) => {
+                                setEmail(e.target.value)
+
+                                if (password !== '')
+                                    setButtonDisabled(false);
+                                else
+                                    setButtonDisabled(true);
+                            }}
                         />
                         <InputTogether
                             name="password"
@@ -35,7 +73,15 @@ function Login() {
                             value={password}
                             lastElement={true}
                             type="password"
-                            onChange={(e) => setPassword(e.target.value)}
+                            required
+                            onChange={(e) => {
+                                setPassword(e.target.value)
+
+                                if (email !== '')
+                                    setButtonDisabled(false);
+                                else
+                                    setButtonDisabled(true);
+                            }}
                         />
                     </fieldset>
 
@@ -43,14 +89,18 @@ function Login() {
                         <label htmlFor="remember">
                             <input
                                 type='checkbox'
-                                value={remember}
+                                checked={remember}
                                 name='remember'
-                                onChange={(e) => setRemember(e.target.value)}
+                                onChange={(e) => setRemember(e.target.checked)}
                             />
                             Lembrar-me
                         </label>
-                        <Link to="/recuperar-senha" className="link-recover-password">Esqueci minha senha</Link>
+                        <Link to="/recovery-password" className="link-recover-password">Esqueci minha senha</Link>
                     </div>
+
+                    {
+                        messegeErro && <span className="messege-erro">{messegeErro}</span>
+                    }
 
                     <button type="submit" className={buttonDisabled ? 'button-disabled' : 'button-active'} disabled={buttonDisabled}>Entrar</button>
                 </form>

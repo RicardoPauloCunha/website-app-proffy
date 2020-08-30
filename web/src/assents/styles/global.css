@@ -14,6 +14,7 @@
     --color-text-complement: #9C98A6;
     --color-text-base: #6A6180;
     --color-line-in-white: #E6E6F0;
+    --color-back-line-in-white: #FAFAFC;
     --color-input-background: #F8F8FC;
     --color-button-text: #FFFFFF;
     --color-box-base: #FFFFFF;
@@ -51,6 +52,11 @@ body, input, button, textarea {
     width: 100vw;
     max-width: 700px;
 }
+
+.messege-erro {
+    color: #E33D3D;
+    margin: auto;
+} 
 
 @media (min-width: 700px) {
     :root {

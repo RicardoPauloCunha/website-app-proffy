@@ -86,6 +86,36 @@
     margin-top: 2.4rem;
 }
 
+#page-teacher-form main .schedule-item .delete-time {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    width: 95%;
+    margin: 1rem 0 2rem 0;
+}
+
+#page-teacher-form main .schedule-item .delete-time:last-of-type {
+    margin: 1rem 0 0 0;
+}
+
+#page-teacher-form main .schedule-item .delete-time span {
+    color: #E33D3D;
+    border: none;
+    cursor: pointer;
+    transition: 1s;
+}
+
+#page-teacher-form main .schedule-item .delete-time span:hover {
+    opacity: 0.6;
+}
+
+#page-teacher-form main .schedule-item .delete-time div {
+    width: 25%;
+    height: 1px;
+    border-bottom: solid 2px var(--color-line-in-white);
+}
+
 #page-teacher-form main footer {
     padding: 4rem 2.4rem;
     background: var(--color-box-footer);
@@ -141,13 +171,22 @@
     }
 
     #page-teacher-form main .schedule-item {
+        display: flex;
+        flex-direction: column;
+    }
+
+    #page-teacher-form main .schedule-item .form-scheduleItem{
         display: grid;
         grid-template-columns: 2fr repeat(2, 1fr);
         grid-column-gap: 1.6rem;
     }
 
-    #page-teacher-form main .schedule-item .input-block {
-        margin-top: 0 !important;
+    #page-teacher-form main .schedule-item .delete-time {
+        width: 103%;
+    }
+
+    #page-teacher-form main .schedule-item .delete-time div {
+        width: 35%;
     }
 
     #page-teacher-form main footer {

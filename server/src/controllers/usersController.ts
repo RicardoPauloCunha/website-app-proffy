@@ -7,8 +7,9 @@ export default class UsersController {
     async create(request: Request, response: Response) {
         let {
             name,
+            surname,
             email,
-            senha,
+            password,
         } = request.body;
 
         let [user] = await db('users')
@@ -16,21 +17,24 @@ export default class UsersController {
             .select('users.*');
 
         if (user != null && user.email == email) {
-            return response.status(209).send();
+            return response.status(409).send();
         }
 
         const saltRounds = 10;
         const salt = bcrypt.genSaltSync(saltRounds);
-        let senhaHash = bcrypt.hashSync(senha, salt);
+        let passwordHash = bcrypt.hashSync(password, salt);
 
         try {
-            await db("users").insert({
+            let [insertedUserId] = await db("users").insert({
                 name,
+                surname,
                 email,
-                senha: senhaHash
+                password: passwordHash
             });
 
-            return response.status(201).send();
+            let token = jwt.sign({ user_id: insertedUserId, user_name: `${name} ${surname}` }, "proffy-secret-key");
+
+            return response.status(200).send(token);
         }
         catch (err) {
             return response.status(400).json({
@@ -42,7 +46,7 @@ export default class UsersController {
     async login(request: Request, response: Response) {
         let {
             email,
-            senha,
+            password,
         } = request.body;
 
         try {
@@ -50,10 +54,10 @@ export default class UsersController {
                 .where('users.email', '=', email)
                 .first();
 
-            let passwordIsValid = bcrypt.compareSync(senha, user.senha);
+            let passwordIsValid = bcrypt.compareSync(password, user.password);
 
             if (passwordIsValid) {
-                let token = jwt.sign({ user_id: user.id, user_name: user.name }, "proffy-secret-key");
+                let token = jwt.sign({ user_id: user.id, user_name: `${user.name} ${user.surname}` }, "proffy-secret-key");
 
                 return response.status(200).send(token);
             }

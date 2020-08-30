@@ -11,6 +11,8 @@
     "@types/react": "^16.9.44",
     "@types/react-dom": "^16.9.8",
     "axios": "^0.19.2",
+    "jwt-decode": "^2.2.0",
+    "lodash.debounce": "^4.0.8",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-icons": "^3.11.0",
@@ -40,6 +42,8 @@
     ]
   },
   "devDependencies": {
+    "@types/jwt-decode": "^2.2.1",
+    "@types/lodash.debounce": "^4.0.6",
     "@types/react-router-dom": "^5.1.5"
   }
 }

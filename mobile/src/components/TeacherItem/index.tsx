@@ -47,7 +47,7 @@ const TeacherItem: React.FC<TeacherItemProps> = ({ teacher, favorited }) => {
 
         if (isFavorited) {
             const favoriteIndex = favoritesArray.findIndex((teacherItem: Teacher) => {
-                return teacherItem.id == teacher.id
+                return teacherItem.id === teacher.id
             });
 
             favoritesArray.splice(favoriteIndex, 1);

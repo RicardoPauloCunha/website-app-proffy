@@ -2,40 +2,46 @@ import React, { useState, useEffect } from 'react';
 import { FiCheckSquare } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 import './styles.css';
+import { getFromPageConcluded } from '../../services/fromConcluded';
 
 interface DataPageProps {
     title: string;
-    message: string;
+    essege: string;
     link: string;
 }
 
 function Concluded() {
     let [title, setTitle] = useState('');
-    let [message, setMessage] = useState('');
+    let [essege, setessege] = useState('');
     let [link, setLink] = useState('');
+    let [linkMessege, setLinkMessege] = useState('');
 
     useEffect(() => {
-        let fromPage = JSON.parse(localStorage.getItem('from-page-concluded') as string);
+        let fromPage = getFromPageConcluded();
 
-        if (fromPage == 1) {
+        if (fromPage === 1) {
             setTitle('Cadastro concluído');
-            setMessage('Agora você faz parte da plataforma da Proffy. Tenha uma ótima experiência');
+            setessege('Agora você faz parte da plataforma da Proffy. Tenha uma ótima experiência');
             setLink('/');
+            setLinkMessege('Fazer login');
         }
-        else if (fromPage == 2) {
+        else if (fromPage === 2) {
             setTitle('Redefinição enviada!');
-            setMessage('Boa, agora é só checar o e-mail que foi enviado para você redefinir sua senha e aproveitar os estudos.');
+            setessege('Boa, agora é só checar o e-mail que foi enviado para você redefinir sua senha e aproveitar os estudos.');
             setLink('/');
+            setLinkMessege('Voltar ao login');
         }
-        else if (fromPage == 3) {
+        else if (fromPage === 3) {
             setTitle('Cadastro salvo!');
-            setMessage('Tudo certo, seu cadastro está na nossa lista de professores. Agora é só ficar de olho no seu WhatsApp.');
+            setessege('Tudo certo, seu cadastro está na nossa lista de professores. Agora é só ficar de olho no seu WhatsApp.');
             setLink('/landing');
+            setLinkMessege('Página inicial');
         }
         else {
             setTitle('Nenhuma ação realizada');
-            setMessage('Você não concluiu nenhuma ação. Volte para ao lógin faça seu cadastro ou vejas as aulas.');
-            setLink('/');
+            setessege('Você não concluiu nenhuma ação. Volte para ao lógin faça seu cadastro ou vejas as aulas.');
+            setLink('/landing');
+            setLinkMessege('Página inicial');
         }
     }, []);
 
@@ -44,9 +50,9 @@ function Concluded() {
             <div id="box-mensage">
                 <span><FiCheckSquare /></span>
                 <h1>{title}</h1>
-                <p>{message}</p>
+                <p>{essege}</p>
                 <Link to={link}>
-                    <button type="button">Voltar ao login</button>
+                    <button type="button">{linkMessege}</button>
                 </Link>
             </div>
         </div>

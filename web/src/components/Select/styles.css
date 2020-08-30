@@ -1,5 +1,6 @@
 .select-block {
     position: relative;
+    align-items: center;
 }
 
 .select-block + .select-block {
@@ -11,7 +12,7 @@
 }
 
 .select-block select {
-    width: 100%;
+    width: 97%;
     height: 5.6rem;
     border-radius: 0.8rem;
     background: var(--color-input-background);

@@ -1,5 +1,6 @@
 .input-block {
     position: relative;
+    align-items: center;
 }
 
 .input-block + .input-block {
